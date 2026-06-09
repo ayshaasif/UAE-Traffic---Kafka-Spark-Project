@@ -1,0 +1,28 @@
+# Virtual environment
+venv/
+logs/
+
+# Logs
+*.log
+**/*.logs
+**/*.pth
+**/*.jpg
+**.tar.gz
+**/*.jsonl
+
+
+# Text files
+*.txt
+!requirements.txt
+
+
+# Python bytecode / cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+cifar100_training_data/cifar-100-python*
+data/*
+**/*.csv
+**/*.json
+**/*.xml
