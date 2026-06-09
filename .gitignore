@@ -26,3 +26,5 @@ data/*
 **/*.csv
 **/*.json
 **/*.xml
+
+traffic_intelligence/.env
