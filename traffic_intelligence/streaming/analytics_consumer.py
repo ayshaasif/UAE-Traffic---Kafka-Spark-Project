@@ -7,6 +7,18 @@ from email.mime.text import MIMEText
 
 
 logger = get_logger("analytics_consumer")
+import json
+from datetime import datetime
+from pathlib import Path
+from streaming.consumer import KafkaConsumerClient
+from storage.postgres_client import PostgresClient
+from utils.logger import get_logger
+
+logger = get_logger("storage_consumer")
+
+DATA_PATH = Path("data/raw")
+DATA_PATH.mkdir(parents=True, exist_ok=True)
+db_client = PostgresClient()
 
 
 # simple rolling window in memory

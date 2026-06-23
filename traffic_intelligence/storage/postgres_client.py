@@ -56,4 +56,50 @@ class PostgresClient:
             f"Inserted road={event['road_name']}"
         )
 
+    def compute_metrics(self):
+
+        query = """
+        SELECT
+            road_id,
+            road_name,
+            AVG(current_speed),
+            AVG(congestion_index),
+            COUNT(*)
+        FROM traffic_events
+        WHERE event_time >= NOW() - INTERVAL '15 minutes'
+        GROUP BY road_id, road_name;
+        """
+
+
+        with self.conn.cursor() as cur:
+            cur.execute(query)
+            results = cur.fetchall()
+
+            for row in results:
+                road_id, road_name, avg_speed, avg_congestion, count = row
+
+                insert_query = """
+                INSERT INTO traffic_metrics (
+                    road_id,
+                    road_name,
+                    avg_speed,
+                    avg_congestion,
+                    event_count,
+                    metric_time
+                )
+                VALUES (%s,%s,%s,%s,%s,NOW())
+                """
+
+                cur.execute(
+                    insert_query,
+                    (road_id, road_name, avg_speed, avg_congestion, count)
+                )
+
+                logger.info(
+                    f"Inserted metrics for road={road_name} | "
+                    f"avg_speed={avg_speed:.2f} | "
+                    f"avg_congestion={avg_congestion:.2f} | "
+                    f"event_count={count}"
+                )
+        
         

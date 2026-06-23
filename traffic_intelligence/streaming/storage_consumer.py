@@ -18,7 +18,7 @@ def storage_handler(event):
     # with open(file_path, "a") as f:
     #     f.write(json.dumps(event) + "\n")
     db_client.insert_event(event)
-
+    # db_client.compute_metrics()
     logger.info(f"Stored event for {event.get('road_name')}")
 
 
